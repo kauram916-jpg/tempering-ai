@@ -1,573 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VigilSense AI</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VigilSense AI — Intelligent Surveillance</title>
+
+  <!-- If using Flask, keep this. If not, remove it. -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+
+  <style>
+    /* ---------- RESET & UTILS ---------- */
+    :root{
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --muted: #7f8c8d;
+      --dark: #2c3e50;
+      --accent: #3db55b;
+      --accent-dark: #32843e;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 8px 30px rgba(33,37,41,0.08);
+      --radius: 12px;
+      --max-width: 1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:var(--bg);color:#222}
+    a{color:inherit}
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
+
+    /* ---------- NAVBAR ---------- */
+    .navbar{
+      background: linear-gradient(90deg,var(--dark), #273544);
+      color:#fff;
+      position:sticky;top:0;z-index:60;
+      box-shadow:0 6px 18px rgba(10,15,25,0.08);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--max-width);margin:0 auto;padding:0 18px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+    .brand .logo {
+      width:44px;height:44px;border-radius:9px;display:inline-grid;place-items:center;
+      background:linear-gradient(180deg,var(--accent),var(--accent-dark));font-weight:700;color:#fff;font-size:18px;
+      box-shadow:0 6px 18px rgba(50,132,62,0.18)
+    }
+    .brand .title{font-size:1.05rem;font-weight:700;letter-spacing:0.2px}
+    .nav-links{display:flex;gap:20px;align-items:center}
+    .nav-links a{color:#ecf0f1;text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:600;transition:background .15s, transform .08s}
+    .nav-links a:hover{background:rgba(255,255,255,0.03);transform:translateY(-1px)}
+    .btn-cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;font-weight:700;text-decoration:none;border:2px solid rgba(0,0,0,0.03)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:#fff}
+
+    /* Hamburger */
+    .hamburger{display:none;background:transparent;border:0;color:#fff;font-size:22px;border-radius:8px;padding:8px}
+    @media (max-width: 880px){
+      .nav-links{position:fixed;inset:72px 0 auto 0;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--dark), #213040);padding:16px;border-top:1px solid rgba(255,255,255,0.02);gap:6px;transform:translateY(-6px);opacity:0;pointer-events:none;transition:opacity .18s, transform .18s}
+      .nav-links.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+      .hamburger{display:inline-flex}
+      .nav-inner{padding:0 12px}
+      .btn-cta{display:none}
+    }
+
+    /* ---------- HERO ---------- */
+    .hero{
+      padding:70px 0 40px;
+      display:grid;grid-template-columns:1fr 460px;gap:32px;align-items:center;
+    }
+    .hero-left h1{font-size:2.6rem;margin:0 0 14px;line-height:1.02;color:var(--dark)}
+    .eyebrow{display:inline-block;background:rgba(61,181,91,0.12);color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:14px}
+    .hero-left p{color:var(--muted);font-size:1.05rem;margin:0 0 22px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .card-cta{background:var(--card);border-radius:10px;padding:22px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,0.03)}
+    .metrics{display:flex;gap:14px;align-items:center}
+    .metric{min-width:80px}
+    .metric .num{font-weight:800;font-size:1.2rem;color:var(--dark)}
+    .metric .label{font-size:.85rem;color:var(--muted)}
+
+    .hero-right .mock{background:linear-gradient(180deg,#ffffff, #fbfdff);border-radius:14px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,0.03)}
+    .mock .screen{height:360px;background:linear-gradient(180deg,#0f1720, #10232b);border-radius:10px;display:flex;flex-direction:column;gap:8px;padding:12px;color:#fff}
+    .mock .row{display:flex;gap:8px;align-items:center}
+    .dot{width:10px;height:10px;border-radius:50%;background:#34d399}
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr; padding-top:48px}
+      .hero-right .mock .screen{height:260px}
+      .hero-left h1{font-size:2.1rem}
+    }
+
+    /* ---------- FEATURES / SERVICES ---------- */
+    .section {padding:48px 0}
+    .section .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:24px}
+    .section h2{margin:0;font-size:1.6rem;color:var(--dark)}
+    .subtle{color:var(--muted);font-size:.98rem}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .card{background:var(--card);padding:22px;border-radius:12px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,0.03)}
+    .card h3{margin:0 0 8px;font-size:1.05rem}
+    .card p{margin:0;color:var(--muted);line-height:1.5}
+    .icon-circle{width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,var(--accent),var(--accent-dark));display:grid;place-items:center;color:#fff;font-weight:800;margin-bottom:12px}
+
+    @media (max-width: 1100px){ .grid-4{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width: 600px){ .grid-4{grid-template-columns:1fr} }
+
+    /* ---------- DOWNLOAD CTA ---------- */
+    .download-cta{display:flex;gap:18px;align-items:center;padding:18px;border-radius:12px;background:linear-gradient(90deg,#fff,#fbfdff);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,0.03)}
+    .download-cta .info{flex:1}
+    .download-cta .info h4{margin:0 0 6px}
+    .download-cta .info p{margin:0;color:var(--muted)}
+    .download-cta .actions{display:flex;gap:10px}
+
+    /* ---------- FOOTER ---------- */
+    .footer{background:linear-gradient(180deg,#243240,#1a2833);color:#dbe7ea;padding:36px 0;margin-top:36px}
+    .footer .cols{display:flex;gap:28px;flex-wrap:wrap}
+    .fcol{flex:1;min-width:200px}
+    .footer a{color:inherit;text-decoration:none}
+    .footer .brand-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .small{font-size:.9rem;color:#a9c2bf}
+
+    /* ---------- UTIL ---------- */
+    .spacer{height:8px}
+    .muted{color:var(--muted)}
+    .mt-8{margin-top:8px}
+    .mb-6{margin-bottom:6px}
+
+    /* ---------- ANIMATIONS ---------- */
+    .fade-in{opacity:0;transform:translateY(6px);animation:fadeIn .55s forwards}
+    @keyframes fadeIn{to{opacity:1;transform:none}}
+
+  </style>
 </head>
-
-<style>
-    /* General Body Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Navbar Styles */
-.navbar {
-    background-color: #2c3e50; /* Dark blue/grey */
-    color: #fff;
-    padding: 1rem 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #4CAF50; /* Green color for Nexus AI */
-    text-decoration: none;
-    letter-spacing: 0.5px;
-}
-
-/* Navigation Menu */
-.nav-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-.nav-menu ul li {
-    margin-left: 25px;
-}
-
-.nav-menu ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 5px 0;
-    transition: color 0.3s ease;
-}
-
-.nav-menu ul li a:hover {
-    color: #4CAF50; /* Green on hover */
-}
-
-/* Mobile Menu Toggle (Hamburger) */
-.menu-toggle {
-    display: none; /* Hide by default on larger screens */
-    flex-direction: column;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.menu-toggle .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #fff;
-    margin: 4px 0;
-    transition: all 0.3s ease;
-}
-
-/* Hero Section Styles (for demo) */
-.hero {
-    background-color: #34495e;
-    color: #fff;
-    text-align: center;
-    padding: 80px 20px;
-    margin-bottom: 30px;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: flex; /* Show hamburger on small screens */
-    }
-
-    .nav-menu {
-        display: none; /* Hide navigation links by default */
-        width: 100%;
-        position: absolute;
-        top: 60px; /* Adjust based on navbar height */
-        left: 0;
-        background-color: #2c3e50;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-        z-index: 1000;
-    }
-
-    .nav-menu.active {
-        display: block; /* Show menu when active */
-    }
-
-    .nav-menu ul {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .nav-menu ul li {
-        margin: 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .nav-menu ul li:last-child {
-        border-bottom: none;
-    }
-
-    .nav-menu ul li a {
-        display: block;
-        padding: 15px 20px;
-        color: #fff;
-    }
-
-    /* Hamburger animation */
-    .menu-toggle.active .bar:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-    .menu-toggle.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-    .menu-toggle.active .bar:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-    }
-}
-
-.footer {
-    background-color: #2c3e50; /* हेडर के बैकग्राउंड से मैच करता हुआ */
-    color: #ecf0f1;
-    padding: 40px 0 10px;
-    margin-top: 30px; /* मुख्य सामग्री से दूरी के लिए */
-}
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap; 
-    justify-content: space-between;
-    padding-bottom: 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.footer-column {
-    flex: 1;
-    min-width: 200px; /* सुनिश्चित करता है कि वे छोटी स्क्रीन पर स्टैक हों */
-    margin-bottom: 20px;
-    padding: 0 15px;
-}
-
-.footer-column h3 {
-    font-size: 1.15rem;
-    color: #4CAF50; /* Nexus green */
-    margin-bottom: 18px;
-    font-weight: 600;
-}
-
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-column ul li {
-    margin-bottom: 10px;
-}
-
-.footer-column ul li a,
-.footer-column p {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    transition: color 0.3s;
-}
-
-.footer-column ul li a:hover {
-    color: #66BB6A; /* Lighter green on hover */
-}
-
-/* Logo and Tagline Column */
-.logo-column {
-    text-align: right;
-}
-
-.footer-logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #4CAF50;
-    text-decoration: none;
-    display: block;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-}
-
-.tagline {
-    font-size: 0.9rem;
-    color: #bdc3c7;
-    margin-bottom: 15px;
-}
-
-/* Social Links */
-.social-links a {
-    color: #ecf0f1;
-    font-size: 1.4rem;
-    margin-left: 15px; /* right side alignment */
-    transition: color 0.3s;
-}
-
-.social-links a:hover {
-    color: #4CAF50;
-}
-
-/* Footer Bottom */
-.footer-bottom {
-    text-align: center;
-    padding-top: 15px;
-    font-size: 0.8rem;
-    color: #bdc3c7;
-}
-
-/* --- Responsive Media Query --- */
-@media (max-width: 768px) {
-    .footer-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer-column {
-        min-width: 100%;
-        text-align: center;
-        margin-bottom: 30px;
-        padding: 0 20px;
-    }
-    
-    .logo-column {
-        text-align: center;
-        order: -1; /* लोगो को सबसे ऊपर ले जाएँ */
-    }
-
-    .social-links a {
-        margin: 0 10px; /* Center alignment के लिए spacing */
-    }
-}
-
-.hero-section {
-    /* **NOTE:** Replace 'assets/hero_bg.jpg' with your actual background image path */
-    background: url('../assets/hero_bg.jpg') center/cover no-repeat; 
-    height: 70vh; /* Viewport height का 70% */
-    display: flex;
-    align-items: center; /* Vertical center */
-    justify-content: center; /* Horizontal center */
-    position: relative;
-    text-align: center;
-    color: #fff;
-}
-
-/* Dark Overlay for better text readability */
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* हेडर के रंग का उपयोग, 70% opacity के साथ */
-    background-color: rgba(44, 62, 80, 0.7); 
-}
-
-.hero-content {
-    position: relative; /* Overlay के ऊपर लाने के लिए */
-    z-index: 10;
-    max-width: 800px;
-    padding: 20px;
-}
-
-.hero-content h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-    font-weight: 700;
-    color: #4CAF50; /* Nexus Green */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-}
-
-.hero-content p {
-    font-size: 1.3rem;
-    margin-bottom: 30px;
-    font-weight: 300;
-    line-height: 1.6;
-}
-
-/* Primary Button Styling */
-.btn-primary {
-    display: inline-block;
-    background-color: #4CAF50; /* Nexus Green */
-    color: #fff;
-    text-decoration: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    border: 2px solid #4CAF50;
-}
-
-.btn-primary:hover {
-    background-color: #388E3C; /* Darker green on hover */
-    border-color: #388E3C;
-}
-
-
-/* --- Responsive Adjustments for Hero --- */
-@media (max-width: 992px) {
-    .hero-section {
-        height: 60vh;
-    }
-    .hero-content h1 {
-        font-size: 2.8rem;
-    }
-    .hero-content p {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .hero-section {
-        height: 50vh;
-    }
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    .hero-content p {
-        font-size: 1rem;
-    }
-    .btn-primary {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-}
-
-.info-section {
-    padding: 60px 0;
-    background-color: #ffffff; /* White background */
-}
-
-.info-grid {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start; /* Ensure items start at the top */
-}
-
-.info-text-content {
-    flex: 3; /* Content takes more space */
-}
-
-.info-feature-list {
-    flex: 2; /* List takes less space */
-    background-color: #f0f4f7; /* Light grey/blue background */
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-/* Text Content Styles */
-.info-text-content h2 {
-    font-size: 2.5rem;
-    color: #34495e; /* Dark Blue from Header */
-    margin-bottom: 20px;
-    border-left: 5px solid #4CAF50; /* Nexus Green accent line */
-    padding-left: 15px;
-}
-
-.info-text-content p {
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-/* Feature List Styles */
-.info-feature-list h3 {
-    font-size: 1.5rem;
-    color: #4CAF50; /* Nexus Green */
-    margin-bottom: 20px;
-}
-
-.info-feature-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-.info-feature-list ul li {
-    font-size: 1rem;
-    margin-bottom: 15px;
-    color: #2c3e50;
-}
-
-.info-feature-list ul li i {
-    color: #4CAF50;
-    margin-right: 10px;
-    font-size: 1.1rem;
-}
-
-/* Secondary Button (Matching Primary Button Style) */
-.btn-secondary {
-    display: inline-block;
-    background-color: #34495e; /* Darker secondary color */
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 25px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.btn-secondary:hover {
-    background-color: #2c3e50;
-}
-
-
-/* --- Responsive Adjustments for Info Section --- */
-@media (max-width: 992px) {
-    .info-text-content h2 {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .info-grid {
-        flex-direction: column; /* Stacks columns vertically on mobile */
-        gap: 30px;
-    }
-    
-    .info-text-content h2 {
-        border-left: none; /* Remove side border on small screen */
-        padding-left: 0;
-        text-align: center;
-    }
-    
-    .info-text-content,
-    .info-feature-list {
-        flex: auto; /* Allow full width */
-    }
-}
-</style>
 <body>
 
-  <header class="navbar">
-</p>
-<p>
-From unauthorized entry and suspicious idling to object tampering and fall detection, our AI engine processes multiple RTSP streams in real-time. This ensures that you are alerted immediately, turning passive security into <b>proactive protection</b>.
-</p>
-<a href="#" class="btn-secondary">Learn More</a>
-</div>
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <div class="logo">VS</div>
+        <div class="title">VigilSense AI</div>
+      </a>
 
+      <button class="hamburger" id="navToggle" aria-label="Toggle menu">☰</button>
 
-<div class="info-feature-list">
-<h3>Key Capabilities</h3>
-<ul>
-<li><i class="fas fa-video"></i> Multi-RTSP Stream Management</li>
-<li><i class="fas fa-robot"></i> Real-time Anomaly Detection (VigilSense Engine)</li>
-<li><i class="fas fa-bell"></i> Instant Alarm & Vibration Alerts</li>
-<li><i class="fas fa-lock"></i> Secure Login & Dashboard Access</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Primary">
+        <a href="/" class="fade-in" style="animation-delay:.05s">Home</a>
+        <a href="/about" class="fade-in" style="animation-delay:.08s">About</a>
+        <a href="/services" class="fade-in" style="animation-delay:.11s">Solutions</a>
+        <a href="/dashboard" class="fade-in" style="animation-delay:.13s">Dashboard</a>
+        <a href="/contact" class="fade-in" style="animation-delay:.15s">Contact</a>
+        <a href="/download" class="btn-cta fade-in" style="animation-delay:.16s">Download App</a>
+      </nav>
+    </div>
+  </header>
 
+  <main>
+    <div class="container">
 
-<footer class="footer">
-<div class="container">
-<div class="footer-content">
-<div class="footer-column">
-<h3>Quick Links</h3>
-<ul>
-<li><a href="#">Home</a></li>
-<li><a href="#">About</a></li>
-<li><a href="#">Contact</a></li>
-<li><a href="#">Privacy Policy</a></li>
-</ul>
-</div>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-left">
+          <span class="eyebrow">Edge • Real-time • Secure</span>
+          <h1>VigilSense AI — Turn any CCTV into a proactive security system.</h1>
+          <p>Next-gen AI surveillance: multi-RTSP stream handling, behavior & anomaly detection, instant alerts, and visual incident reports — all optimized for reliability and low latency.</p>
 
+          <div class="hero-actions">
+            <a class="btn-cta" href="/download">Get the App</a>
+            <a class="btn-ghost" href="/services">See Solutions</a>
+          </div>
 
-<div class="footer-column">
-<h3>Services</h3>
-<ul>
-<li><a href="#">AI Monitoring</a></li>
-<li><a href="#">Anomaly Detection</a></li>
-<li><a href="#">RTSP Stream Setup</a></li>
-<li><a href="#">Reports & Analytics</a></li>
-</ul>
-</div>
+          <div class="card-cta mt-8" style="margin-top:18px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:14px">
+              <div>
+                <div class="metrics">
+                  <div class="metric"><div class="num">99.8%</div><div class="label">Uptime</div></div>
+                  <div class="metric"><div class="num">50+</div><div class="label">Cameras / Node</div></div>
+                  <div class="metric"><div class="num"><span style="color:var(--accent)">0.6s</span></div><div class="label">Avg. Alert Time</div></div>
+                </div>
+                <div class="small mt-8 muted">Built for edge deployments and cloud hybrid setups. Works with RTSP, ONVIF, and popular IP cameras.</div>
+              </div>
 
+              <div style="min-width:160px;text-align:right">
+                <a href="/contact" class="btn-ghost" style="background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--dark)">Request Demo</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="footer-column">
-<h3>Contact Us</h3>
-<p>Email: support@vigilsense.com</p>
-<p>Phone: +91 123 456 7890</p>
-<p>Address: Tech Hub, City, India</p>
-</div>
+        <div class="hero-right">
+          <div class="mock fade-in" style="animation-delay:.08s">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div style="font-weight:700;color:#0b1f24">Live Monitor</div>
+              <div style="font-size:.9rem;color:var(--muted)">Camera Cluster • Node 12</div>
+            </div>
 
+            <div class="screen">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div class="dot"></div>
+                  <div style="font-weight:700">Active Streams</div>
+                </div>
+                <div style="font-size:.9rem;color:rgba(255,255,255,0.7)">08:23 AM</div>
+              </div>
 
-<div class="footer-column logo-column">
-<a href="#" class="footer-logo">VigilSense AI</a>
-<p class="tagline">Intelligent Surveillance Core</p>
-<div class="social-links">
-<a href="#"><i class="fab fa-linkedin"></i></a>
-<a href="#"><i class="fab fa-twitter"></i></a>
-<a href="#"><i class="fab fa-github"></i></a>
-</div>
-</div>
-</div>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px;flex:1">
+                <div style="background:linear-gradient(180deg,#0b1720,#10212b);border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:space-between">
+                  <div style="font-size:.9rem">Entrance Cam</div>
+                  <div style="font-weight:700;font-size:1.1rem">No activity</div>
+                </div>
+                <div style="background:linear-gradient(180deg,#0b1720,#10212b);border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:space-between">
+                  <div style="font-size:.9rem">Perimeter Cam</div>
+                  <div style="font-weight:700;font-size:1.1rem;color:#ffd166">Suspicious</div>
+                </div>
 
+                <div style="background:linear-gradient(180deg,#061016,#0a1a21);border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:space-between">
+                  <div style="font-size:.9rem">Warehouse</div>
+                  <div style="font-weight:700;font-size:1.1rem">No activity</div>
+                </div>
 
-<div class="footer-bottom">
-<p>&copy; <span id="current-year"></span> VigilSense AI. All rights reserved. | Powered by Survilex</p>
-</div>
-</div>
-</footer>
-    <script >
-        document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const navMenu = document.querySelector('.nav-menu');
+                <div style="background:linear-gradient(180deg,#061016,#0a1a21);border-radius:8px;padding:8px;display:flex;flex-direction:column;justify-content:space-between">
+                  <div style="font-size:.9rem">Loading Bay</div>
+                  <div style="font-weight:700;font-size:1.1rem">Motion</div>
+                </div>
+              </div>
 
-    mobileMenu.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
-        mobileMenu.classList.toggle('active'); // For hamburger animation
-    });
+              <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:.9rem;color:rgba(255,255,255,0.7)">Event queue: 3</div>
+                <div style="font-size:.9rem;color:rgba(255,255,255,0.6)">CPU 36% • Mem 58%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    // Close menu when a link is clicked (optional for single-page apps)
-    document.querySelectorAll('.nav-menu ul li a').forEach(item => {
-        item.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            mobileMenu.classList.remove('active');
+      <!-- FEATURES -->
+      <section class="section">
+        <div class="section-head">
+          <h2>What VigilSense Does</h2>
+          <div class="subtle">AI-driven features built for accuracy and speed</div>
+        </div>
+
+        <div class="grid-4">
+          <div class="card fade-in" style="animation-delay:.06s">
+            <div class="icon-circle">A</div>
+            <h3>Real-time Anomaly Detection</h3>
+            <p>Detects suspicious behaviors, loitering, intrusion, falls and crowding using specialized ML models tuned for video streams.</p>
+          </div>
+
+          <div class="card fade-in" style="animation-delay:.09s">
+            <div class="icon-circle">S</div>
+            <h3>Scalable Multi-RTSP</h3>
+            <p>Connect dozens of RTSP streams per node. Intelligent stream prioritization preserves bandwidth and reduces CPU load.</p>
+          </div>
+
+          <div class="card fade-in" style="animation-delay:.12s">
+            <div class="icon-circle">A</div>
+            <h3>Fast Alerts & Integrations</h3>
+            <p>Push alerts to mobile, SMS, webhook, or existing SIEM systems. Customize thresholds and actions per camera or zone.</p>
+          </div>
+
+          <div class="card fade-in" style="animation-delay:.15s">
+            <div class="icon-circle">R</div>
+            <h3>Reports & Incident Timeline</h3>
+            <p>Detailed event logs and timeline views let you review incidents quickly with keyframes and timestamps for audits.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOWNLOAD / CTA -->
+      <section class="section" style="padding-top:24px;">
+        <div class="grid-4" style="grid-template-columns:2fr 1fr;">
+          <div>
+            <h2>Get started with VigilSense</h2>
+            <p class="muted">Download the APK, deploy the edge node, or request a cloud-hosted demo. Flexible deployment to match your security architecture.</p>
+
+            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+              <a href="/download" class="btn-cta">Download APK</a>
+              <a href="/contact" class="btn-ghost">Request Demo</a>
+              <a href="/services" class="btn-ghost">Integration Docs</a>
+            </div>
+          </div>
+
+          <div>
+            <div class="download-cta">
+              <div class="info">
+                <h4>VigilSense_AI_v1.0.apk</h4>
+                <p class="muted">25 MB • Requires Android 8.0+ • Last updated: Oct 2025</p>
+              </div>
+              <div class="actions">
+                <a class="btn-cta" href="/downloads/vigilsense-ai-v1.0.apk" download>Download</a>
+              </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="card mt-8">
+              <h3>Deployment Options</h3>
+              <p class="muted">Edge (Raspberry / NUC), On-prem server, or Cloud-managed. Secure tunnels and TLS available for remote management.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div> <!-- container -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
+        <div style="min-width:240px">
+          <div class="brand-row">
+            <div class="logo" style="width:44px;height:44px;border-radius:9px;background:linear-gradient(180deg,var(--accent),var(--accent-dark));display:grid;place-items:center;color:#fff;font-weight:800">VS</div>
+            <div>
+              <div style="font-weight:800;color:#ecf6f3">VigilSense AI</div>
+              <div class="small">Intelligent Surveillance Core</div>
+            </div>
+          </div>
+
+          <p class="muted" style="margin-top:12px">VigilSense AI converts passive CCTV systems into proactive security platforms — reducing false positives and delivering clear incident context to operators.</p>
+        </div>
+
+        <div style="display:flex;gap:28px;flex-wrap:wrap">
+          <div class="fcol">
+            <h4 style="margin:0 0 10px">Products</h4>
+            <ul style="list-style:none;padding:0;margin:0;color:#cfe6e3">
+              <li><a href="/download">Mobile App</a></li>
+              <li><a href="/services">Edge Node</a></li>
+              <li><a href="/services#cloud">Cloud Console</a></li>
+            </ul>
+          </div>
+
+          <div class="fcol">
+            <h4 style="margin:0 0 10px">Company</h4>
+            <ul style="list-style:none;padding:0;margin:0;color:#cfe6e3">
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+            </ul>
+          </div>
+
+          <div class="fcol">
+            <h4 style="margin:0 0 10px">Contact</h4>
+            <p style="margin:0;color:#cfe6e3">support@vigilsense.com<br>+91 123 456 7890</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.04);margin-top:20px;padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+        <div class="small">© <span id="year"></span> VigilSense AI. All rights reserved.</div>
+        <div class="small">Powered by Survilex</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hamburger toggle
+    (function(){
+      const navToggle = document.getElementById('navToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      navToggle.addEventListener('click', function(){
+        navLinks.classList.toggle('show');
+        navToggle.classList.toggle('open');
+      });
+
+      // Close menu on link click (mobile)
+      navLinks.querySelectorAll('a').forEach(a=>{
+        a.addEventListener('click', ()=> {
+          if(navLinks.classList.contains('show')){
+            navLinks.classList.remove('show');
+            navToggle.classList.remove('open');
+          }
         });
-    });
-});
-    </script>
+      });
+    })();
+  </script>
 </body>
 </html>
+
