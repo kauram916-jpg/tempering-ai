@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI</title>
+    <!-- Project name updated from Nexus AI to VigilSense AI -->
+    <title>VigilSense AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome for Icons (used in About section and Social links) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <style>
@@ -40,7 +43,7 @@ body {
 .logo {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #4CAF50; /* Green color for Nexus AI */
+    color: #4CAF50; /* Green color for VigilSense AI */
     text-decoration: none;
     letter-spacing: 0.5px;
 }
@@ -182,7 +185,7 @@ body {
 
 .footer-column h3 {
     font-size: 1.15rem;
-    color: #4CAF50; /* Nexus green */
+    color: #4CAF50; /* VigilSense Green */
     margin-bottom: 18px;
     font-weight: 600;
 }
@@ -301,7 +304,7 @@ body {
 /* Text Content Styles */
 .about-text-column h2 {
     font-size: 2.5rem;
-    color: #4CAF50; /* Nexus Green */
+    color: #4CAF50; /* VigilSense Green */
     margin-bottom: 20px;
 }
 
@@ -408,7 +411,7 @@ body {
 
     <header class="navbar">
         <div class="container">
-            <a href="#" class="logo">Nexus AI</a>
+            <a href="#" class="logo">VigilSense AI</a>
             <div class="menu-toggle" id="mobile-menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -439,12 +442,12 @@ body {
                     <div class="about-text-column">
                         <h2>Our Mission: Proactive Security</h2>
                         <p>
-                            **Nexus AI** was founded on the principle that security should be proactive, not reactive. Our intelligent surveillance core, powered by the **Survilex** platform, uses advanced algorithms to move beyond simple motion detection.
+                            **VigilSense AI** was founded on the principle that security should be proactive, not reactive. Our intelligent surveillance core, powered by the **Survilex** platform, uses advanced algorithms to move beyond simple motion detection.
                         </p>
                         
-                        <h3>How Nexus AI Works:</h3>
+                        <h3>How VigilSense AI Works:</h3>
                         <p class="ai-function-detail">
-                            The Nexus Engine processes **multi-RTSP camera feeds** in real-time. It analyzes behavior, context, and patterns to detect anomalies like:
+                            The VigilSense Engine processes **multi-RTSP camera feeds** in real-time. It analyzes behavior, context, and patterns to detect anomalies like:
                             <br>
                             <i class="fas fa-exclamation-triangle"></i> **Unauthorized Access:** Identifying persons in restricted zones.
                             <br>
@@ -459,7 +462,7 @@ body {
 
                     <div class="founder-card-column">
                         <div class="founder-card">
-                           
+                            
                             <h4>Karn Kumar</h4>
                             <p class="title">Founder & Chief Executive Officer (CEO)</p>
                             <hr>
@@ -499,13 +502,14 @@ body {
 
                 <div class="footer-column">
                     <h3>Contact Us</h3>
-                    <p>Email: support@nexusai.com</p>
+                    <!-- Email address domain updated -->
+                    <p>Email: support@vigilsenseai.com</p>
                     <p>Phone: +91 123 456 7890</p>
                     <p>Address: Tech Hub, City, India</p>
                 </div>
 
                 <div class="footer-column logo-column">
-                    <a href="#" class="footer-logo">Nexus AI</a>
+                    <a href="#" class="footer-logo">VigilSense AI</a>
                     <p class="tagline">Intelligent Surveillance Core</p>
                     <div class="social-links">
                         <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -516,7 +520,8 @@ body {
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; <span id="current-year"></span> Nexus AI. All rights reserved. | Powered by Survilex</p>
+                <!-- Copyright name updated -->
+                <p>&copy; <span id="current-year"></span> VigilSense AI. All rights reserved. | Powered by Survilex</p>
             </div>
         </div>
     </footer>
@@ -538,6 +543,9 @@ body {
             mobileMenu.classList.remove('active');
         });
     });
+    
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 });
     </script>
 </body>
