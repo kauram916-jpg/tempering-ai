@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<style>
+    /* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #2c3e50; /* Dark blue/grey */
+    color: #fff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4CAF50; /* Green color for Nexus AI */
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+/* Navigation Menu */
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-menu ul li {
+    margin-left: 25px;
+}
+
+.nav-menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-menu ul li a:hover {
+    color: #4CAF50; /* Green on hover */
+}
+
+/* Mobile Menu Toggle (Hamburger) */
+.menu-toggle {
+    display: none; /* Hide by default on larger screens */
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 4px 0;
+    transition: all 0.3s ease;
+}
+
+/* Hero Section Styles (for demo) */
+.hero {
+    background-color: #34495e;
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Show hamburger on small screens */
+    }
+
+    .nav-menu {
+        display: none; /* Hide navigation links by default */
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Adjust based on navbar height */
+        left: 0;
+        background-color: #2c3e50;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
+
+    .nav-menu.active {
+        display: block; /* Show menu when active */
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-menu ul li {
+        margin: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-menu ul li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-menu ul li a {
+        display: block;
+        padding: 15px 20px;
+        color: #fff;
+    }
+
+    /* Hamburger animation */
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
+
+.footer {
+    background-color: #2c3e50; /* हेडर के बैकग्राउंड से मैच करता हुआ */
+    color: #ecf0f1;
+    padding: 40px 0 10px;
+    margin-top: 30px; /* मुख्य सामग्री से दूरी के लिए */
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px; /* सुनिश्चित करता है कि वे छोटी स्क्रीन पर स्टैक हों */
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.footer-column h3 {
+    font-size: 1.15rem;
+    color: #4CAF50; /* Nexus green */
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a,
+.footer-column p {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #66BB6A; /* Lighter green on hover */
+}
+
+/* Logo and Tagline Column */
+.logo-column {
+    text-align: right;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4CAF50;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.tagline {
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    margin-bottom: 15px;
+}
+
+/* Social Links */
+.social-links a {
+    color: #ecf0f1;
+    font-size: 1.4rem;
+    margin-left: 15px; /* right side alignment */
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #4CAF50;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 15px;
+    font-size: 0.8rem;
+    color: #bdc3c7;
+}
+
+/* --- Responsive Media Query --- */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-column {
+        min-width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 0 20px;
+    }
+    
+    .logo-column {
+        text-align: center;
+        order: -1; /* लोगो को सबसे ऊपर ले जाएँ */
+    }
+
+    .social-links a {
+        margin: 0 10px; /* Center alignment के लिए spacing */
+    }
+}
+
+/* --- Services Section Styles --- */
+.services-section {
+    padding: 80px 0;
+    background-color: #ffffff; /* White background */
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    color: #34495e;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-bottom: 40px;
+}
+
+/* Services Grid Layout */
+.services-grid {
+    display: grid;
+    /* Desktop: 4 columns */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.service-box {
+    background-color: #f8f9fa; /* Light background for the box */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.service-box:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.service-icon {
+    font-size: 3rem;
+    color: #4CAF50; /* Nexus Green */
+    margin-bottom: 20px;
+}
+
+.service-box h3 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.service-box p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* --- Responsive Adjustments for Services --- */
+@media (max-width: 1200px) {
+    .services-grid {
+        /* Medium Screens: 2 columns */
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .services-grid {
+        /* Small Screens: 1 column */
+        grid-template-columns: 1fr; 
+        gap: 25px;
+    }
+    
+    .service-box {
+        padding: 25px;
+    }
+}
+</style>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <a href="#" class="logo">Nexus AI</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <nav class="nav-menu">
+                    <ul>
+    <!-- Home Page - Flask Route: @app.route('/') -->
+    <li><a href="/">Home</a></li>
+    
+    <!-- About Page - Flask Route: @app.route('/about') -->
+    <li><a href="/about">About</a></li>
+    
+    <!-- Service Page - Flask Route: @app.route('/services') -->
+    <li><a href="/services">Service</a></li>
+    
+    <!-- Download Page - Flask Route: @app.route('/download') -->
+    <li><a href="/download">Download</a></li>
+</ul>
+            </nav>
+        </div>
+    </header>
+
+   <section class="services-section">
+            <div class="container">
+                <h2 class="section-title">Intelligent Services Powered by Nexus AI</h2>
+                <p class="section-subtitle">Our core engine provides seamless, proactive surveillance across every camera feed.</p>
+                
+                <div class="services-grid">
+                    
+                    <div class="service-box">
+                        <i class="fas fa-robot service-icon"></i>
+                        <h3>Real-Time Anomaly Detection</h3>
+                        <p>
+                            Beyond simple motion, the Nexus Engine uses deep learning to identify unauthorized access, suspicious loitering, and potentially harmful sudden actions (like falls or fights).
+                        </p>
+                    </div>
+
+                    <div class="service-box">
+                        <i class="fas fa-video service-icon"></i>
+                        <h3>Multi-RTSP Stream Management</h3>
+                        <p>
+                            Effortlessly integrate and monitor dozens of cameras concurrently. Our system is optimized for multi-RTSP streaming, ensuring low-latency, simultaneous surveillance.
+                        </p>
+                    </div>
+
+                    <div class="service-box">
+                        <i class="fas fa-bell service-icon"></i>
+                        <h3>Instant Alert System</h3>
+                        <p>
+                            Immediate notifications via alarms, device vibration, and in-app alerts when a critical event is detected, ensuring rapid security response and minimizing reaction time.
+                        </p>
+                    </div>
+
+                    <div class="service-box">
+                        <i class="fas fa-chart-line service-icon"></i>
+                        <h3>Historical Analysis & Reporting</h3>
+                        <p>
+                            Access detailed logs and reports of all flagged events. Track incident frequencies, review video timestamps, and improve your overall security protocols over time.
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">AI Monitoring</a></li>
+                        <li><a href="#">Anomaly Detection</a></li>
+                        <li><a href="#">RTSP Stream Setup</a></li>
+                        <li><a href="#">Reports & Analytics</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>Email: support@nexusai.com</p>
+                    <p>Phone: +91 123 456 7890</p>
+                    <p>Address: Tech Hub, City, India</p>
+                </div>
+
+                <div class="footer-column logo-column">
+                    <a href="#" class="footer-logo">Nexus AI</a>
+                    <p class="tagline">Intelligent Surveillance Core</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Nexus AI. All rights reserved. | Powered by Survilex</p>
+            </div>
+        </div>
+    </footer>
+
+    <script >
+        document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navMenu = document.querySelector('.nav-menu');
+
+    mobileMenu.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active'); // For hamburger animation
+    });
+
+    // Close menu when a link is clicked (optional for single-page apps)
+    document.querySelectorAll('.nav-menu ul li a').forEach(item => {
+        item.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        });
+    });
+});
+    </script>
+</body>
+</html>
