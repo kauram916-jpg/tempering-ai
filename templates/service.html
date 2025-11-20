@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VigilSense AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <style>
     /* General Body Styles */
 body {
@@ -363,123 +362,66 @@ body {
 </style>
 <body>
 
-    <header class="navbar">
-        <div class="container">
-            <a href="#" class="logo">Nexus AI</a>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <nav class="nav-menu">
-                    <ul>
-    <!-- Home Page - Flask Route: @app.route('/') -->
-    <li><a href="/">Home</a></li>
-    
-    <!-- About Page - Flask Route: @app.route('/about') -->
-    <li><a href="/about">About</a></li>
-    
-    <!-- Service Page - Flask Route: @app.route('/services') -->
-    <li><a href="/services">Service</a></li>
-    
-    <!-- Download Page - Flask Route: @app.route('/download') -->
-    <li><a href="/download">Download</a></li>
+  <header class="navbar">
+<div class="container">
+<a href="#" class="logo">VigilSense AI</a>
+<div class="menu-toggle" id="mobile-menu">
+<span class="bar"></span>
+<span class="bar"></span>
+<span class="bar"></span>
+</div>
+<nav class="nav-menu">
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/services">Service</a></li>
+<li><a href="/download">Download</a></li>
 </ul>
-            </nav>
-        </div>
-    </header>
+</nav>
+</div>
+</header>
 
-   <section class="services-section">
-            <div class="container">
-                <h2 class="section-title">Intelligent Services Powered by Nexus AI</h2>
-                <p class="section-subtitle">Our core engine provides seamless, proactive surveillance across every camera feed.</p>
-                
-                <div class="services-grid">
-                    
-                    <div class="service-box">
-                        <i class="fas fa-robot service-icon"></i>
-                        <h3>Real-Time Anomaly Detection</h3>
-                        <p>
-                            Beyond simple motion, the Nexus Engine uses deep learning to identify unauthorized access, suspicious loitering, and potentially harmful sudden actions (like falls or fights).
-                        </p>
-                    </div>
 
-                    <div class="service-box">
-                        <i class="fas fa-video service-icon"></i>
-                        <h3>Multi-RTSP Stream Management</h3>
-                        <p>
-                            Effortlessly integrate and monitor dozens of cameras concurrently. Our system is optimized for multi-RTSP streaming, ensuring low-latency, simultaneous surveillance.
-                        </p>
-                    </div>
+<section class="services-section">
+<div class="container">
+<h2 class="section-title">Intelligent Services Powered by VigilSense AI</h2>
+<p class="section-subtitle">Our core engine provides seamless, proactive surveillance across every camera feed.</p>
 
-                    <div class="service-box">
-                        <i class="fas fa-bell service-icon"></i>
-                        <h3>Instant Alert System</h3>
-                        <p>
-                            Immediate notifications via alarms, device vibration, and in-app alerts when a critical event is detected, ensuring rapid security response and minimizing reaction time.
-                        </p>
-                    </div>
 
-                    <div class="service-box">
-                        <i class="fas fa-chart-line service-icon"></i>
-                        <h3>Historical Analysis & Reporting</h3>
-                        <p>
-                            Access detailed logs and reports of all flagged events. Track incident frequencies, review video timestamps, and improve your overall security protocols over time.
-                        </p>
-                    </div>
-                    
-                </div>
-            </div>
-        </section>
+<div class="services-grid">
 
-        <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
 
-                <div class="footer-column">
-                    <h3>Services</h3>
-                    <ul>
-                        <li><a href="#">AI Monitoring</a></li>
-                        <li><a href="#">Anomaly Detection</a></li>
-                        <li><a href="#">RTSP Stream Setup</a></li>
-                        <li><a href="#">Reports & Analytics</a></li>
-                    </ul>
-                </div>
+<div class="service-box">
+<i class="fas fa-robot service-icon"></i>
+<h3>Real-Time Anomaly Detection</h3>
+<p>
+VigilSense Engine uses deep learning to identify unauthorized access, loitering, sudden actions, falls, and fights.
+</p>
+</div>
 
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p>Email: support@nexusai.com</p>
-                    <p>Phone: +91 123 456 7890</p>
-                    <p>Address: Tech Hub, City, India</p>
-                </div>
 
-                <div class="footer-column logo-column">
-                    <a href="#" class="footer-logo">Nexus AI</a>
-                    <p class="tagline">Intelligent Surveillance Core</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
+<div class="service-box">
+<i class="fas fa-video service-icon"></i>
+<h3>Multi-RTSP Stream Management</h3>
+<p>
+Monitor dozens of cameras concurrently with optimized multi-RTSP streaming and low latency.
+</p>
+</div>
 
-            <div class="footer-bottom">
-                <p>&copy; <span id="current-year"></span> Nexus AI. All rights reserved. | Powered by Survilex</p>
-            </div>
-        </div>
-    </footer>
 
+<div class="service-box">
+<i class="fas fa-bell service-icon"></i>
+<h3>Instant Alert System</h3>
+<p>
+Get immediate alarms, vibration alerts, and in-app notifications on critical event detection.
+</p>
+</div>
+
+
+<div class="service-box">
+<i class="fas fa-chart-line service-icon"></i>
+<h3>Historical Analysis & Reporting</h3>
+</footer>
     <script >
         document.addEventListener('DOMContentLoaded', function() {
     const mobileMenu = document.getElementById('mobile-menu');
