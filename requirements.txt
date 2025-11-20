@@ -1,0 +1,11 @@
+Core Web Framework (Used for API endpoints and web interface)
+
+Flask==3.0.3
+
+Computer Vision (Used for video stream capture, processing, and anomaly detection)
+
+opencv-python==4.9.0.80
+
+Numerical Operations (Used by OpenCV for array manipulation and calculations like np.mean, np.std)
+
+numpy==1.26.4
